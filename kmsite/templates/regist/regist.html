@@ -1,0 +1,121 @@
+<html>
+<head>
+  <title>첫 웹페이지</title>
+</head>
+<link href="static/common/vender/css/bootstrap.css" rel="stylesheet">
+<link href="static/common/vender/css/style.css" type="text/css" rel="stylesheet">
+<body>
+  <div class="main-header-wrapper">
+    <div class="navbar-nav-scroll">
+        <ul class="navbar-nav bd-navbar-nav flex-row">
+          <li><a class="logo-link" href='/index'><img class="logo" src="static/common/img/images.png" alt="main logo"></li>
+          <li class="nav-item" href="#"><a class="nav-link " href="#">메뉴1</a></li>
+          <li class="nav-item" href="#"><a class="nav-link " href="#">메뉴2</a></li>
+          <li class="nav-item" href="#"><a class="nav-link " href="#">메뉴3</a></li>
+          <li class="nav-item" href="#"><a class="nav-link " href="#">메뉴4</a></li>
+
+          <div class="col col-xs-4 text-right">
+            <a class="login-btn" href="/login">로그인/회원가입</a>
+          </div>
+        <ul>
+    </div>
+  </div>
+
+
+  <div class="container">
+    <div class="row main">
+
+      <div class="main-login main-center">
+        <form class="form-horizontal" method="post" action="#">
+
+          <div class="form-group">
+            <label for="name" class="cols-sm-2 control-label">Your ID</label>
+            <div class="cols-sm-10">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+                <input type="text" class="form-control" name="id" id="id"  placeholder="Enter your ID"/>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="email" class="cols-sm-2 control-label">Your Email</label>
+            <div class="cols-sm-10">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
+                <input type="text" class="form-control" name="email" id="email"  placeholder="Enter your Email"/>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="username" class="cols-sm-2 control-label">name</label>
+            <div class="cols-sm-10">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
+                <input type="text" class="form-control" name="name" id="name"  placeholder="Enter your name"/>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="password" class="cols-sm-2 control-label">Password</label>
+            <div class="cols-sm-10">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                <input type="password" class="form-control" name="password" id="password"  placeholder="Enter your Password"/>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="confirm" class="cols-sm-2 control-label">Confirm Password</label>
+            <div class="cols-sm-10">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                <input type="password" class="form-control" name="confirm" id="confirm"  placeholder="Confirm your Password"/>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group ">
+            <button type="button" class="btn btn-primary btn-lg btn-block login-button" onclick="api_regist_create()">Register</button>
+          </div>
+          <div class="login-register">
+                  <a href="/login">Login</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div id='csrf_token' hidden>{{csrf_token}}</div>
+</body>
+<script src="static/common/vender/jQuery/jquery.js"></script>
+<script src="static/common/vender/js/bootstrap.js"></script>
+<script src="/static/common/vender/sweetalert2/sweetalert.js"></script>
+<script>
+function api_regist_create(){
+  var login_id = $('#id').val();
+  var login_email = $('#email').val();
+  var login_name = $('#name').val();
+  var login_password = $('#password').val();
+  var csrf_token = $('#csrf_token').text();
+  console.log(login_id);
+  console.log(login_password);
+  console.log(login_name);
+  console.log(csrf_token);
+  $.post("api_regist_create", {
+    id:login_id,
+    email:login_email,
+    name: login_name,
+    password:login_password,
+    csrfmiddlewaretoken: csrf_token,
+  })
+
+  .done(function( data ) {
+    swal("Good job!", "You clicked the button!", "success")
+    .then((result)=>{window.location.href = "/login"});
+  });
+}
+</script>
+</html>

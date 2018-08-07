@@ -1,0 +1,73 @@
+<html>
+<head>
+  <title>첫 웹페이지</title>
+</head>
+<link href="static/common/vender/css/bootstrap.css" rel="stylesheet">
+<link href="static/common/vender/css/style.css" type="text/css" rel="stylesheet">
+<body>
+  <div class="main-header-wrapper">
+    <div class="navbar-nav-scroll">
+        <ul class="navbar-nav bd-navbar-nav flex-row">
+          <li><a class="logo-link" href='/index'><img class="logo" src="static/common/img/images.png" alt="main logo"></li>
+          <li class="nav-item" href="#"><a class="nav-link " href="#">메뉴1</a></li>
+          <li class="nav-item" href="#"><a class="nav-link " href="#">메뉴2</a></li>
+          <li class="nav-item" href="#"><a class="nav-link " href="#">메뉴3</a></li>
+          <li class="nav-item" href="#"><a class="nav-link " href="#">메뉴4</a></li>
+
+          <div class="col col-xs-4 text-right">
+            <a class="login-btn" href="/login">로그인/회원가입</a>
+          </div>
+        <ul>
+    </div>
+  </div>
+  <div class="wrapper fadeInDown">
+  <div id="formContent">
+    <!-- Tabs Titles -->
+    <h2 class="active"> Sign In </h2>
+    <!-- Icon -->
+    <div class="fadeIn first">
+      <img src="http://danielzawadzki.com/codepen/01/icon.svg" id="icon" alt="User Icon" />
+    </div>
+
+    <!-- Login Form -->
+      <input type="text" id="id" class="fadeIn second" name="id" placeholder="login">
+      <input type="text" id="password" class="fadeIn third" name="login" placeholder="password">
+      <input type="button" class="fadeIn fourth" value="Log In" onclick="login_check()">
+      <input type="button" class="fadeIn fourth" value="Regist" onclick="regist()">
+
+    <div id='csrf_token' hidden>{{csrf_token}}</div>
+    <!-- Remind Passowrd -->
+    <div id="formFooter">
+      <a class="underlineHover" href="#">Forgot Password?</a>
+    </div>
+
+  </div>
+</div>
+
+</body>
+<script src="static/common/vender/jquery/jquery.js"></script>
+<script src="static/common/vender/js/bootstrap.js"></script>
+<script src="/static/common/vender/sweetalert2/sweetalert.js"></script>
+<script>
+  function regist(){
+    location.href="/regist"
+  }
+
+  function login_check(){
+    var login_id = $('#id').val();
+    var login_password = $('#password').val();
+    var csrf_token = $('#csrf_token').text();
+    $.post("login_check", {
+      id:login_id,
+      password:login_password,
+      csrfmiddlewaretoken: csrf_token,
+    })
+
+    .done(function( data ) {
+      swal("Good job!", "You clicked the button!", "success")
+      .then((result)=>{window.location.href = "/index"});
+    });
+
+  }
+</script>
+</html>

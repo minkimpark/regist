@@ -1,0 +1,95 @@
+<html>
+<head>
+  <title>첫 웹페이지</title>
+</head>
+<link href="static/common/vender/css/bootstrap.css" rel="stylesheet">
+<link href="static/common/vender/css/style.css" type="text/css" rel="stylesheet">
+<body>
+  <div class="main-header-wrapper">
+    <div class="navbar-nav-scroll">
+        <ul class="navbar-nav bd-navbar-nav flex-row">
+          <li><a class="logo-link" href='/index'><img class="logo" src="static/common/img/images.png" alt="main logo"></li>
+          <li class="nav-item" href="#"><a class="nav-link " href="#">메뉴1</a></li>
+          <li class="nav-item" href="#"><a class="nav-link " href="#">메뉴2</a></li>
+          <li class="nav-item" href="#"><a class="nav-link " href="#">메뉴3</a></li>
+          <li class="nav-item" href="#"><a class="nav-link " href="#">메뉴4</a></li>
+
+          <div class="col col-xs-4 text-right">
+            {% if request.session.id %}
+              <a id="logout" class="login-btn" href="#">{{request.session.id}}님 로그아웃</a>
+            {% else %}
+              <a class="login-btn" href="/login">로그인/회원가입</a>
+
+            {% endif %}
+          </div>
+        <ul>
+    </div>
+  </div>
+  <div style="margin-top: 0px;">
+      <div  class="subheader">
+        <div class="media-types">
+          <a class>가</a>
+          <a class>나</a>
+          <a class>다</a>
+          <a class>라</a>
+        </div>
+      </div>
+  </div>
+
+  <div>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">First</th>
+            <th scope="col">Last</th>
+            <th scope="col">Handle</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">1</th>
+            <td>Mark</td>
+            <td>Otto</td>
+            <td>@mdo</td>
+          </tr>
+          <tr>
+            <th scope="row">2</th>
+            <td>Jacob</td>
+            <td>Thornton</td>
+            <td>@fat</td>
+          </tr>
+          <tr>
+            <th scope="row">3</th>
+            <td>Larry</td>
+            <td>the Bird</td>
+            <td>@twitter</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div id='csrf_token' hidden>{{csrf_token}}</div>
+</body>
+<script src="static/common/vender/jquery/jquery.js"></script>
+<script src="static/common/vender/js/bootstrap.js"></script>
+<script>
+  $( document ).ready(function() {
+    $( "#logout" ).click(function() {
+
+      var csrf_token = $('#csrf_token').text();
+
+      $.post( "/logout", {
+         csrfmiddlewaretoken : csrf_token,
+       })
+      .done(function( data ) {
+        if(data.return == 'success'){
+          window.location.href = "/login";
+        }
+        else{
+          console.log('error');
+        }
+      });
+    });
+  });
+</script>
+</html>

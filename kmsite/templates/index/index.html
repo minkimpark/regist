@@ -5,7 +5,8 @@
 <link href="static/common/vender/css/bootstrap.css" rel="stylesheet">
 <link href="static/common/vender/css/style.css" type="text/css" rel="stylesheet">
 <body>
-  <div class="main-header-wrapper">
+  <div id="navbar">
+
     <div class="navbar-nav-scroll">
         <ul class="navbar-nav bd-navbar-nav flex-row">
           <li><a class="logo-link" href='/index'><img class="logo" src="static/common/img/images.png" alt="main logo"></li>
@@ -37,37 +38,38 @@
   </div>
 
   <div>
+
       <table class="table table-striped">
         <thead>
           <tr>
-            <th scope="col">#</th>
-            <th scope="col">First</th>
-            <th scope="col">Last</th>
-            <th scope="col">Handle</th>
+            <th scope="col">글번호</th>
+            <th scope="col">제목</th>
+            <th scope="col">작성자</th>
+            <th scope="col">날짜</th>
+            <th scope="col">조회수</th>
           </tr>
+
+    </div>
         </thead>
+        {%if boards%}
         <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-          </tr>
-          <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-          </tr>
-          <tr>
-            <th scope="row">3</th>
-            <td>Larry</td>
-            <td>the Bird</td>
-            <td>@twitter</td>
-          </tr>
+          {% for board in boards%}
+
+              <tr onclick="api_write_read('{{board.0}}')">
+                  <th scope="row">{{board.0}}</th>
+                  <th scope="row">{{board.2}}</a></th>
+                  <th scope="row">{{board.1}}</th>
+                  <th scope="row">{{board.3}}</th>
+                  <th scope="row">{{board.4}}</th>
+              </tr>
+
+          {%endfor%}
+
         </tbody>
+        {%endif%}
       </table>
     </div>
+    <input id="writeBtn" class="btn-primary" type="button" value="글작성">
     <div id='csrf_token' hidden>{{csrf_token}}</div>
 </body>
 <script src="static/common/vender/jquery/jquery.js"></script>
@@ -90,6 +92,22 @@
         }
       });
     });
+
+    $("#writeBtn").click(function(){
+      location.href="/write"
+    })
+    $("#api_write_read").click(function(){
+      location.href="/write"
+    })
+
+
   });
+  function api_write_read(index){
+    var num = index;
+    location.href="/api_write_read?num="+num
+  }
+
+
+
 </script>
 </html>

@@ -57,6 +57,7 @@
     var login_id = $('#id').val();
     var login_password = $('#password').val();
     var csrf_token = $('#csrf_token').text();
+    console.log(csrf_token)
     $.post("login_check", {
       id:login_id,
       password:login_password,

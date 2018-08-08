@@ -1,0 +1,111 @@
+<html>
+<head>
+  <title>첫 웹페이지</title>
+</head>
+<link href="static/common/vender/css/bootstrap.css" rel="stylesheet">
+<link href="static/common/vender/css/style.css" type="text/css" rel="stylesheet">
+<link href="static/common/vender/summernote/summernote.css" type="text/css" rel="stylesheet">
+<body>
+  <div class="main-header-wrapper">
+    <div class="navbar-nav-scroll">
+        <ul class="navbar-nav bd-navbar-nav flex-row">
+          <li><a class="logo-link" href='/index'><img class="logo" src="static/common/img/images.png" alt="main logo"></li>
+          <li class="nav-item" href="#"><a class="nav-link " href="#">메뉴1</a></li>
+          <li class="nav-item" href="#"><a class="nav-link " href="#">메뉴2</a></li>
+          <li class="nav-item" href="#"><a class="nav-link " href="#">메뉴3</a></li>
+          <li class="nav-item" href="#"><a class="nav-link " href="#">메뉴4</a></li>
+
+          <div class="col col-xs-4 text-right">
+            {% if request.session.id %}
+              <a id="logout" class="login-btn" href="#">{{request.session.id}}님 로그아웃</a>
+            {% else %}
+              <a class="login-btn" href="/login">로그인/회원가입</a>
+
+            {% endif %}
+          </div>
+        <ul>
+    </div>
+  </div>
+    <div>
+      <label for="title">제목</label>
+      <input type="text" id="subject" style="height:20px; text-align:left;">
+    </div>
+
+    <div>
+      <label for="title">내용</label>
+      <div id="summernote">
+
+      </div>
+    </div>
+
+    <div>
+      <div class="col col-xs-2 text-center">
+        <button class="btn-primary" id="api_write_create" type="button">작성</button>
+        <button class="btn-primary" type="reset">취소</button>
+      </div>
+    </div>
+
+
+  <div id='csrf_token' hidden>{{csrf_token}}</div>
+  <div id='memberid' hidden>{{request.session.id}}</div>
+</body>
+<script src="static/common/vender/js/popper.js"></script>
+<script src="static/common/vender/jquery/jquery.js"></script>
+<script src="static/common/vender/js/bootstrap.js"></script>
+<script src="static/common/vender/summernote/summernote.js"></script>
+<script src="/static/common/vender/sweetalert2/sweetalert.js"></script>
+<script>
+$( document ).ready(function() {
+  $('#summernote').summernote({
+    height: 300,                 // set editor height
+    minHeight: null,             // set minimum height of editor
+    maxHeight: null,             // set maximum height of editor
+    focus: true                  // set focus to editable area after initializing summernote
+  });
+  $( "#logout" ).click(function() {
+
+    var csrf_token = $('#csrf_token').text();
+
+    $.post( "/logout", {
+       csrfmiddlewaretoken : csrf_token,
+     })
+    .done(function( data ) {
+      if(data.return == 'success'){
+        window.location.href = "/login";
+      }
+      else{
+        console.log('error');
+      }
+    });
+  })
+
+
+  $('#api_write_create').click(function(){
+
+    var subject = $("#subject").val();
+    var content = $('#summernote').summernote('code');
+    var csrf_token = $('#csrf_token').text();
+    var id = $('#memberid').text();
+    console.log(subject)
+    console.log(content)
+    console.log(csrf_token)
+    console.log(id)
+    $.post("api_write_create", {
+      id : id,
+      subject: subject,
+      content: content,
+      csrfmiddlewaretoken: csrf_token,
+    })
+
+    .done(function( data ) {
+      swal("Good job!", "You clicked the button!", "success")
+      .then((result)=>{window.location.href = "/index"});
+    });
+  })
+
+
+});
+
+
+</script>
+</html>
